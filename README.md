@@ -1,8 +1,5 @@
 # Insec
 
-# Backend 
-Go(Golang) Back-end -> https://github.com/redmejia/insec-vuln-go
-
 # En
 
 Insec is a web application created for the purpose of learning. This is version number one and is designed for students who are starting their career in cyber security, networking security or fullstack development.
@@ -17,3 +14,7 @@ Para la version numero uno puedes practicar vulnerabilidades como sql injection 
 
 Nota: Insec app hacido desarrollada intencionalmente con estas vulnerabilidades con el fin de aprendizaje. Con esto quiero mostrar que no hay lenguaje de programacion malo yo quiero hacer enficis de que errores pueden ocurrir si se escribe codigo incorrectamente y esto puede causar grandes problamas si se desplieaga en producion. Yo insentivo no solo a pracricar estas vulnerabilidades si no a tambien proproner solucines y tratar de reparar estos errores.
 
+Requirement 
+- Go(Golang) install instructin -> https://go.dev/doc/install
+- Docker Install documentation -> https://docs.docker.com/engine/install/
+- Reactjs -> https://react.dev
