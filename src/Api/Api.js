@@ -58,6 +58,18 @@ export const useFetch = () => {
         ]
     })
 
+    // Update email
+    const [updateMailResp, setUpdateMail] = useState({
+        updated: false,
+        error: true,
+        business_info: {
+            bus_id: 0,
+            email: "",
+            name: "",
+            bus_name: ""
+        }
+    })
+
     // AUTH
     const registerUser = (user) => {
         fetch(baseURL + "/register", {
@@ -84,13 +96,14 @@ export const useFetch = () => {
     }
 
     // Deal
-    const createDeal = (deal) => {
+    const createDeal = (newDeal) => {
+
         fetch(baseURL + "/deal", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify(deal)
+            body: JSON.stringify(newDeal)
 
         }).then(resp => resp.json())
             .then(resp => setDeal(resp)) // deal response
@@ -140,13 +153,34 @@ export const useFetch = () => {
 
     // all deals
     const getAllDeals = () => {
-        fetch("http://localhost:8080/v1/deals/all", {
+    
+        fetch(baseURL + "/deals/all", {
             method: "GET",
             headers: {
                 "Content-Type": "application/json"
             },
         }).then(resp => resp.json())
             .then(resp => setDeals(resp))
+    }
+
+    const addNewDeal = (deal) => {
+        setDeals({
+            ...allDeals,
+            deals : [...allDeals.deals, deal]
+        })
+    }
+
+
+    // update email
+    const updateBusinessEmail = (myBusiness) => {
+        fetch(baseURL + "/my/business", {
+            method: "PATCH",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(myBusiness)
+        }).then(resp => resp.json())
+            .then(resp => setUpdateMail(resp))
     }
 
 
@@ -156,13 +190,16 @@ export const useFetch = () => {
         mailResp,
         serchResult,
         allDeals,
+        updateMailResp,
         registerUser,
         logninUser,
         createDeal,
+        addNewDeal, // add new deal to state
         changeDealCreatedState,
         sendMail,
         changeMailState,
         searchDealsByBusinessName,
-        getAllDeals
+        getAllDeals,
+        updateBusinessEmail
     };
 };

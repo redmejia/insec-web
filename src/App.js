@@ -10,14 +10,17 @@ const App = () => {
 		mailResp,
 		serchResult,
 		allDeals,
+		updateMailResp,
 		logninUser,
 		registerUser,
 		createDeal,
+		addNewDeal,
 		changeDealCreatedState,
 		sendMail,
 		changeMailState,
 		searchDealsByBusinessName,
-		getAllDeals
+		getAllDeals,
+		updateBusinessEmail
 	} = useFetch();
 
 
@@ -33,7 +36,7 @@ const App = () => {
 		password: "",
 	});
 
-
+	const [isNewDeal, setNewDealState] = useState(false)
 	const [dealFormData, setDealFormData] = useState({
 		pro_name: '',
 		pro_desc: '',
@@ -58,6 +61,12 @@ const App = () => {
 
 	const [searchFormData, setSearchFormData] = useState({
 		search: ''
+	})
+
+	//update email
+	const [updateEmail, setUpdateEmail] = useState({
+		bus_id: 0,
+		email: ""
 	})
 
 	const handleRegisterChange = (e) => {
@@ -96,6 +105,13 @@ const App = () => {
 		})
 	}
 
+	// update business email 
+	const handleUpdateBusinessEmailChange = (e) => {
+		setUpdateEmail({
+			...updateEmail,
+			[e.target.name]: e.target.value
+		})
+	}
 	const handleRegisterSubmit = (e) => {
 		e.preventDefault();
 		// Add your registration logic here
@@ -116,12 +132,13 @@ const App = () => {
 		// Add your create deal logic here
 		const newDeal = {
 			...dealFormData,
-			price: parseFloat(dealFormData.price),
 			bus_id: resp.my_business.bus_id,
-			bus_name: resp.my_business.bus_name
+			bus_name: resp.my_business.bus_name,
+			price: parseFloat(dealFormData.price),
 		}
 
 		createDeal(newDeal)
+		addNewDeal(newDeal)
 		cleanDealForm()
 		// console.log('Create Deal form submitted:', dealFormData);
 	};
@@ -135,14 +152,24 @@ const App = () => {
 
 	const handleSearchSubmit = (e) => {
 		e.preventDefault()
-
 		searchDealsByBusinessName(searchFormData.search)
-
 	}
+
+	// handle submit update email
+	const handleUpdateBusinessEmail = (e) => {
+		e.preventDefault()
+		const myBusiness = {
+			...updateEmail,
+			bus_id: resp.my_business.bus_id
+		}
+		updateBusinessEmail(myBusiness)
+	}
+
 	// all deals 
-	useEffect(()=> {
+	useEffect(() => {
 		getAllDeals()
-	},[])
+	}, [])
+
 
 	useEffect(() => {
 		if (mailResp.delivered) {
@@ -229,7 +256,6 @@ const App = () => {
 						}
 					</Col>
 				</Col>
-
 				<Col>
 					<h2>Login</h2>
 					<Form onSubmit={handleLoginSubmit}>
@@ -267,6 +293,39 @@ const App = () => {
 									<>
 										{
 											JSON.stringify(resp.my_business, null, 4)
+										}
+									</>
+								</Alert>
+							</div>
+						}
+					</Col>
+				</Col>
+				<Col>
+					<h2>Change Email</h2>
+					<Form onSubmit={handleUpdateBusinessEmail}>
+						<Form.Group controlId="formLoginEmail">
+							<Form.Label>Email</Form.Label>
+							<Form.Control
+								type="email"
+								placeholder="Enter email"
+								name="email"
+								value={updateEmail.email}
+								onChange={handleUpdateBusinessEmailChange}
+							/>
+						</Form.Group>
+						<Button variant="primary" type="submit">
+							Change Email
+						</Button>
+					</Form>
+					<Col>
+						{updateMailResp.updated &&
+							<div>
+								<Alert variant={'success'}>
+									<p> 🟢 Email Updated </p>
+									<br></br>
+									<>
+										{
+											JSON.stringify(updateMailResp.business_info, null, 4)
 										}
 									</>
 								</Alert>
@@ -338,7 +397,7 @@ const App = () => {
 							/>
 						</Form.Group>
 						{
-							serchResult.deals  &&
+							serchResult.deals &&
 							<Form.Group controlId="formResult">
 								<Form.Label>Result</Form.Label>
 								<Form.Control
