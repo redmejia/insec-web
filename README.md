@@ -1,3 +1,3 @@
 # Insec
 
-Go(Golang) RESTfulAPI -> https://github.com/redmejia/insec-vuln-go
+Go(Golang) Back-end -> https://github.com/redmejia/insec-vuln-go
