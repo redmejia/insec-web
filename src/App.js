@@ -306,7 +306,7 @@ const App = () => {
 						<Form.Group controlId="formLoginEmail">
 							<Form.Label>Email</Form.Label>
 							<Form.Control
-								type="email"
+								type="text"
 								placeholder="Enter email"
 								name="email"
 								value={updateEmail.email}
